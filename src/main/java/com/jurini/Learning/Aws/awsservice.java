@@ -1,5 +1,6 @@
 package com.jurini.Learning.Aws;
 
+import aj.org.objectweb.asm.TypeReference;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -8,41 +9,38 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 public class awsservice {
-
-
-
     public String getFileImageName;
 
     public String URL;
 
+    public String BucketName;
 
 
+    public String accesskey ;
+    public String secrectkey ;
 
-    public String BucketName = "9music";
-
-
-    public String accesskey = "AKIARAQEMD63IEOP7S4R";
-    public String secrectkey = "WaV1iLHwLCqyAsKrjCElyZ1cSVYjF8wteU0LMcg8";
 
     AWSCredentials credentials = new BasicAWSCredentials(accesskey,secrectkey);
 
 
 
     AmazonS3 s3client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_NORTH_1).build();
+
+
 
 
     private File convertMultiPartFileToFile(MultipartFile file) {
